@@ -19,9 +19,9 @@ const deserializeUser = async (
         const refreshToken = get(req, "headers.x-refresh");
 
         if (!accessToken){
-            console.log('accessToken', accessToken)
-             throw new HttpException(403, "could not get access token")
-            // return next();
+            // console.log('accessToken', accessToken)
+             // throw new HttpException(403, "could not get access token")
+            return next();
         }
 
         const { decoded, expired, errMessage } = decode(accessToken);

@@ -1,75 +1,75 @@
 import {NextFunction, Request, Response} from "express";
 import { get } from "lodash";
-import {
-    createPost,
-    findPost,
-    findAndUpdate,
-    deletePost,
-} from "../service/post.service";
-import {createComment} from "../service/comment.service";
+
+import {createComment, findComment, findAndUpdate, deleteComment} from "../service/comment.service";
 import HttpException from "../exceptions/HttpException";
 
 export async function createCommentHandler(req: Request, res: Response, next: NextFunction) {
     try{
-        // throw new HttpException(404, 'wew')
+
         const userId = get(req, "user._id");
-        // const postId = get(req, "post._id");
+        console.log('userId', userId)
+
         const body = req.body;
 
-        const post = await createComment({ ...body, user: userId, post:body.postId });
+        const comment = await createComment({ ...body, user: userId, post:body.postId });
 
-        return res.send({post});
+        return res.send({comment});
     } catch (e) {
         next(e)
     }
 
 }
 
-export async function updatePostHandler(req: Request, res: Response) {
+export async function updateCommentHandler(req: Request, res: Response) {
     const userId = get(req, "user._id");
-    const postId = get(req, "params.postId");
+    const commentId = get(req, "body.commentId");
+    // console.log(commentId)
     const update = req.body;
 
-    const post = await findPost({ postId });
+    const comment = await findComment({ commentId });
 
-    if (!post) {
-        return res.sendStatus(404);
+    if (!comment) {
+        return res.status(404).json('not found');
     }
 
-    if (String(post.user) !== userId) {
+    if (String(comment.user) !== userId) {
         return res.sendStatus(401);
     }
 
-    const updatedPost = await findAndUpdate({ postId }, update, { new: true });
+    const updatedComment = await findAndUpdate({ commentId }, update, { new: true });
 
-    return res.send(updatedPost);
+    return res.send(updatedComment);
 }
-export async function getPostHandler(req: Request, res: Response) {
-    const postId = get(req, "params.postId");
-    const post = await findPost({ postId });
+export async function getCommentHandler(req: Request, res: Response) {
+    const commentId = get(req, "params.commentId");
+    console.log(commentId)
+    const comment = await findComment({ commentId });
 
-    if (!post) {
+    if (!comment) {
         return res.sendStatus(404);
     }
 
-    return res.send(post);
+    return res.send(comment);
 }
 
-export async function deletePostHandler(req: Request, res: Response) {
+export async function deleteCommentHandler(req: Request, res: Response) {
     const userId = get(req, "user._id");
-    const postId = get(req, "params.postId");
+    const commentId = get(req, "query.commentId");
 
-    const post = await findPost({ postId });
+    const comment = await findComment({ commentId });
 
-    if (!post) {
+    if (!comment) {
         return res.sendStatus(404);
     }
 
-    if (String(post.user) !== String(userId)) {
+    console.log(comment.user)
+    console.log(userId)
+    if (String(comment.user) !== String(userId)) {
         return res.sendStatus(401);
     }
 
-    await deletePost({ postId });
+    await deleteComment({ commentId });
 
     return res.sendStatus(200);
 }

@@ -20,10 +20,12 @@ export const createCommentSchema = object({
 });
 
 export const updateCommentSchema = object({
-    ...params,
+    // ...params,
     ...payload,
 });
 
 export const deleteCommentSchema = object({
-    ...params,
+    query: object({
+        commentId: string().required("commentId in query is required"),
+    }),
 });

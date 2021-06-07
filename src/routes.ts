@@ -7,8 +7,8 @@ import {createUserSchema,
 } from './schemas/user.schema'
 import {createPostSchema} from "./schemas/post.schema";
 import {createPostHandler, deletePostHandler, getPostHandler, updatePostHandler} from "./controller/post.controller";
-import {createCommentHandler} from "./controller/comment.controller";
-import {createCommentSchema} from "./schemas/comment.schema";
+import {createCommentHandler, getCommentHandler, updateCommentHandler, deleteCommentHandler} from "./controller/comment.controller";
+import {createCommentSchema, deleteCommentSchema, updateCommentSchema} from "./schemas/comment.schema";
 
 export default function (app: Express) {
     app.get('/healthcheck', (req: Request, res: Response)=>{
@@ -65,21 +65,19 @@ export default function (app: Express) {
 
         )
 
-    /* Not created yet
-
     // Update a comment
     app.put('/api/comments',
-        [requiresUser, validateRequest(createPostSchema)],
-        updatePostHandler
+        [requiresUser, validateRequest(updateCommentSchema)],
+        updateCommentHandler
     )
     // Get a comment
-    app.get('/api/comments/:commentId', getPostHandler)
+    app.get('/api/comments/:commentId', getCommentHandler)
 
     // Delete a comment
     app.delete('/api/comments',
-        [requiresUser, validateRequest(createPostSchema)],
-        deletePostHandler)
+        [requiresUser, validateRequest(deleteCommentSchema)],
+        deleteCommentHandler)
 
 
-     */
+
 }

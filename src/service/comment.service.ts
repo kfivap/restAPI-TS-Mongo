@@ -10,10 +10,11 @@ export function createComment(input: DocumentDefinition<CommentDocument>) {
     return Comment.create(input);
 }
 
-export function findPost(
+export function findComment(
     query: FilterQuery<CommentDocument>,
     options: QueryOptions = { lean: true }
 ) {
+    // console.log(query)
     return Comment.findOne(query, {}, options);
 }
 
@@ -25,6 +26,8 @@ export function findAndUpdate(
     return Comment.findOneAndUpdate(query, update, options);
 }
 
-export function deletePost(query: FilterQuery<CommentDocument>) {
+
+export function deleteComment(query: FilterQuery<CommentDocument>) {
+    console.log(query)
     return Comment.deleteOne(query);
 }

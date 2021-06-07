@@ -18,7 +18,7 @@ export async function createPostHandler(req: Request, res: Response) {
 
 export async function updatePostHandler(req: Request, res: Response) {
     const userId = get(req, "user._id");
-    const postId = get(req, "params.postId");
+    const postId = get(req, "body.postId");
     const update = req.body;
 
     const post = await findPost({ postId });
@@ -48,7 +48,7 @@ export async function getPostHandler(req: Request, res: Response) {
 
 export async function deletePostHandler(req: Request, res: Response) {
     const userId = get(req, "user._id");
-    const postId = get(req, "params.postId");
+    const postId = get(req, "query.postId");
 
     const post = await findPost({ postId });
 
