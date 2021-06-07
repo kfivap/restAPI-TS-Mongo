@@ -66,6 +66,7 @@ export default function (app: Express) {
         )
 
     /* Not created yet
+
     // Update a comment
     app.put('/api/comments',
         [requiresUser, validateRequest(createPostSchema)],

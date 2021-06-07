@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import {NextFunction, Request, Response} from "express";
 import { get } from "lodash";
 import {
     createPost,
@@ -7,15 +7,22 @@ import {
     deletePost,
 } from "../service/post.service";
 import {createComment} from "../service/comment.service";
+import HttpException from "../exceptions/HttpException";
 
-export async function createCommentHandler(req: Request, res: Response) {
-    const userId = get(req, "user._id");
-    // const postId = get(req, "post._id");
-    const body = req.body;
+export async function createCommentHandler(req: Request, res: Response, next: NextFunction) {
+    try{
+        // throw new HttpException(404, 'wew')
+        const userId = get(req, "user._id");
+        // const postId = get(req, "post._id");
+        const body = req.body;
 
-    const post = await createComment({ ...body, user: userId, post:body.postId });
+        const post = await createComment({ ...body, user: userId, post:body.postId });
 
-    return res.send({post});
+        return res.send({post});
+    } catch (e) {
+        next(e)
+    }
+
 }
 
 export async function updatePostHandler(req: Request, res: Response) {
